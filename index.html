@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Denica Home — Coming Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --accent: #c8a96e;
+      --accent-dim: rgba(200,169,110,0.15);
+      --text: #f0ece4;
+      --muted: rgba(240,236,228,0.45);
+      --border: rgba(200,169,110,0.2);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Josefin Sans', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.45;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* Ambient glow */
+    .glow {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .glow-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200,169,110,0.12), transparent 70%);
+      top: -150px; right: -100px;
+      animation: drift1 18s ease-in-out infinite alternate;
+    }
+    .glow-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(200,169,110,0.07), transparent 70%);
+      bottom: -100px; left: -80px;
+      animation: drift2 22s ease-in-out infinite alternate;
+    }
+    @keyframes drift1 { from { transform: translate(0,0); } to { transform: translate(-60px, 60px); } }
+    @keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(50px, -40px); } }
+
+    /* Layout */
+    .page {
+      position: relative;
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* Left panel */
+    .left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 56px 64px;
+      border-right: 1px solid var(--border);
+      animation: fadeUp 1.2s ease both;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .logo-wrap img {
+      height: 40px;
+      width: auto;
+      filter: brightness(1.1);
+    }
+
+    .headline {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .eyebrow {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+      animation: fadeUp 1.2s 0.2s ease both;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(52px, 6vw, 86px);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      animation: fadeUp 1.2s 0.35s ease both;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .desc {
+      margin-top: 32px;
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      line-height: 1.9;
+      color: var(--muted);
+      max-width: 340px;
+      animation: fadeUp 1.2s 0.5s ease both;
+    }
+
+
+
+    /* Right panel */
+    .right {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 56px 64px;
+      animation: fadeUp 1.2s 0.15s ease both;
+    }
+
+    /* Divider line */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      position: relative;
+    }
+    .divider::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      height: 100%;
+      background: var(--accent);
+      animation: progress 6s cubic-bezier(0.4,0,0.2,1) infinite;
+    }
+    @keyframes progress {
+      0%   { width: 0%; opacity: 1; }
+      70%  { width: 100%; opacity: 1; }
+      100% { width: 100%; opacity: 0; }
+    }
+
+    /* Footer row */
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .social-links {
+      display: flex;
+      gap: 24px;
+    }
+    .social-links a {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .social-links a:hover { color: var(--accent); }
+
+    .copyright {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      opacity: 0.5;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      html, body { overflow: auto; }
+      .page { grid-template-columns: 1fr; height: auto; min-height: 100vh; }
+      .left { padding: 40px 32px; border-right: none; border-bottom: 1px solid var(--border); }
+      .right { padding: 40px 32px; }
+      .count-sep { display: none; }
+      .countdown { gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <div class="page">
+
+    <!-- LEFT -->
+    <div class="left">
+      <div class="logo-wrap">
+        <img src="logo.png" alt="Company Logo" />
+      </div>
+
+      <div class="headline">
+        <p class="eyebrow">Something extraordinary awaits</p>
+        <h1>Coming<br /><em>Soon</em></h1>
+        <p class="desc">
+          Denica Home is on its way. We are crafting a carefully curated home experience — refined, personal, and worth the wait.
+        </p>
+      </div>
+
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+
+      <div>
+        <div class="divider"></div>
+        <br/>
+        <div class="footer-row">
+          <div class="social-links">
+            <a href="https://www.instagram.com/homedenica">Instagram</a>
+          </div>
+          <span class="copyright">© 2026 Denica Home</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</body>
+</html>
