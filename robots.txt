@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://denicahome.com/sitemap.xml
