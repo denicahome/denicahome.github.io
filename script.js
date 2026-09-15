@@ -29,7 +29,7 @@ if (menuToggle && nav) {
 
 const updateHeader = () => {
   if (!header) return;
-  header.classList.toggle("is-sticky", window.scrollY > 34);
+  header.classList.toggle("is-sticky", window.scrollY > 8);
 };
 
 updateHeader();
@@ -54,10 +54,54 @@ if (reducedMotion || !("IntersectionObserver" in window)) {
   revealItems.forEach((item) => revealObserver.observe(item));
 }
 
-document.querySelectorAll(".care-list details").forEach((detail) => {
+// Collection tabs: without JS every panel is shown stacked.
+const tabs = document.querySelector("[data-tabs]");
+
+if (tabs) {
+  const tabButtons = [...tabs.querySelectorAll('[role="tab"]')];
+  const panels = tabButtons.map((tab) => document.getElementById(tab.getAttribute("aria-controls")));
+
+  const selectTab = (index, focus = false) => {
+    tabButtons.forEach((tab, i) => {
+      const selected = i === index;
+      tab.setAttribute("aria-selected", String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+      panels[i].hidden = !selected;
+    });
+    if (focus) tabButtons[index].focus();
+  };
+
+  tabButtons.forEach((tab, index) => {
+    tab.addEventListener("click", () => selectTab(index));
+    tab.addEventListener("keydown", (event) => {
+      const last = tabButtons.length - 1;
+      const next = {
+        ArrowRight: index === last ? 0 : index + 1,
+        ArrowLeft: index === 0 ? last : index - 1,
+        Home: 0,
+        End: last,
+      }[event.key];
+      if (next === undefined) return;
+      event.preventDefault();
+      selectTab(next, true);
+    });
+  });
+
+  selectTab(0);
+}
+
+// Close-up: hovering a list item highlights its pin, and vice versa.
+document.querySelectorAll("[data-hotspot]").forEach((element) => {
+  const group = document.querySelectorAll(`[data-hotspot="${element.dataset.hotspot}"]`);
+  const setActive = (active) => group.forEach((node) => node.classList.toggle("is-active", active));
+  element.addEventListener("pointerenter", () => setActive(true));
+  element.addEventListener("pointerleave", () => setActive(false));
+});
+
+document.querySelectorAll(".accordion details").forEach((detail) => {
   detail.addEventListener("toggle", () => {
     if (!detail.open) return;
-    document.querySelectorAll(".care-list details").forEach((other) => {
+    document.querySelectorAll(".accordion details").forEach((other) => {
       if (other !== detail) other.open = false;
     });
   });
