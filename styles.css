@@ -199,7 +199,7 @@ p { text-wrap: pretty; }
 }
 
 .nav-link-external { justify-self: end; }
-.nav-link-external span { margin-left: 0.3rem; }
+.nav-link-external span, .nav-shop span { margin-left: 0.3rem; }
 .menu-toggle { display: none; }
 
 /* Hero (module 1) */
